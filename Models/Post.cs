@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using MyBlog.Enums;
 
 namespace MyBlog.Models
 {
@@ -34,7 +35,9 @@ namespace MyBlog.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
-        
+
+        public ReadyStatus ReadyStatus { get; set; }
+
         public string Slug { get; set; }
         
         public byte[] ImageData { get; set; }
