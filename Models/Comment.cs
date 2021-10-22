@@ -1,7 +1,6 @@
-﻿using System;
+﻿using MyBlog.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-using MyBlog.Enums;
 
 namespace MyBlog.Models
 {
@@ -9,7 +8,7 @@ namespace MyBlog.Models
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string AuthorId { get; set; }
+        public string BlogUserrId { get; set; }
         public string ModeratorId { get; set; }
 
         [Required]
@@ -31,7 +30,7 @@ namespace MyBlog.Models
 
         // Navigation Properties
         public virtual Post Post { get; set; }
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
         public virtual BlogUser Moderator { get; set; }
     }
 }
