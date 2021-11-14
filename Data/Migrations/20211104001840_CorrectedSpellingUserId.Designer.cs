@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211022022241_001")]
-    partial class _001
+    [Migration("20211104001840_CorrectedSpellingUserId")]
+    partial class CorrectedSpellingUserId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -284,9 +284,6 @@ namespace MyBlog.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("text");
 
                     b.Property<string>("BlogUserId")
                         .HasColumnType("text");

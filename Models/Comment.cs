@@ -8,7 +8,7 @@ namespace MyBlog.Models
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string BlogUserrId { get; set; }
+        public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 
         [Required]

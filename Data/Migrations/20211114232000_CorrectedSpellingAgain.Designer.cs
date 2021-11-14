@@ -10,15 +10,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211022022241_001")]
-    partial class _001
+    [Migration("20211114232000_CorrectedSpellingAgain")]
+    partial class CorrectedSpellingAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -288,9 +288,6 @@ namespace MyBlog.Data.Migrations
                     b.Property<string>("BlogUserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("text");
-
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -346,9 +343,6 @@ namespace MyBlog.Data.Migrations
 
                     b.Property<int>("BlogId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("text");
 
                     b.Property<string>("BlogUserId")
                         .HasColumnType("text");

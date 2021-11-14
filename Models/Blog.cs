@@ -41,6 +41,7 @@ namespace MyBlog.Models
         
 
         // Navigation Property
+        [Display(Name = "Author")]
         public virtual BlogUser BlogUser { get; set; }
         public ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
