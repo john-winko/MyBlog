@@ -48,7 +48,7 @@ namespace MyBlog.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description");
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
             return View();
         }
 
@@ -83,7 +83,7 @@ namespace MyBlog.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
             return View(post);
         }
 
