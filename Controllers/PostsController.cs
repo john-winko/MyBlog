@@ -22,7 +22,7 @@ namespace MyBlog.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p=>p.BlogUser);
+            var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p=> p.BlogUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -136,6 +136,7 @@ namespace MyBlog.Controllers
 
             var post = await _context.Posts
                 .Include(p => p.Blog)
+                .Include(p => p.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
