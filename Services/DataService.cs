@@ -25,6 +25,9 @@ namespace MyBlog.Services
 
         public async Task ManageDataAsync()
         {
+            // create database from the migrations
+            await _dbContext.Database.MigrateAsync();
+
             // Seeding a few roles into the system
             await SeedRolesAsync();
             
