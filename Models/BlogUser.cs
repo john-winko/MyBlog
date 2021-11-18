@@ -17,6 +17,11 @@ namespace MyBlog.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
+        [Display(Name = "Display Name")]
+        public string DisplayName { get; set; }
+
         public byte[] ImageData { get; set; }
         public string ContentType { get; set; }
 
