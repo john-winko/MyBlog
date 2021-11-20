@@ -63,7 +63,7 @@
                         @Html.DisplayFor(modelItem => item.BlogUserId)
                     </td>*@
                 <td>
-                    <img src=@imageService.DecodeImage(item.ImageData, item.ContentType)/>
+                    <img class="img-fluid" width="200px;" src="@imageService.DecodeImage(item.ImageData, item.ContentType)"/>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)

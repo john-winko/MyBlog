@@ -56,7 +56,7 @@
                     @Html.DisplayFor(modelItem => blog.Updated)
                 </td>
                 <td>
-                    <img src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)"/>
+                    <img class="img-fluid" width="200px;" src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)"/>
                     @*@Html.DisplayFor(modelItem => blog.ImageData)*@
                 </td>
                 @*<td>
