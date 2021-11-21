@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using MyBlog.Models;
 using MyBlog.Services;
+using Npgsql.PostgresTypes;
 
 namespace MyBlog.Controllers
 {
@@ -195,7 +196,7 @@ namespace MyBlog.Controllers
             {
                 try
                 {
-                    // pull prior data before so we don't overwrite with a null
+                    // pull prior data before so we don't overwrite with a null (the originalPost)
                     var newPost = await _context.Posts.Include(p=>p.Tags).FirstOrDefaultAsync(p=>p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now;
@@ -203,6 +204,22 @@ namespace MyBlog.Controllers
                     newPost.Abstract = post.Abstract;
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
+
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    if (newSlug != newPost.Slug)
+                    {
+                        if (_slugService.IsUnique(newSlug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "This title is not unique and creates a duplicate slug");
+                            ViewData["TagValues"] = string.Join(",", tagValues);
+                            return View(post);
+                        }
+                    }
 
                     if (newImage is not null)
                     {
