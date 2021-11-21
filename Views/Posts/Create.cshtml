@@ -57,32 +57,32 @@
                     <input asp-for="Slug" class="form-control" />
                     <span asp-validation-for="Slug" class="text-danger"></span>
                 </div>*@
-        <div class="form-group">
-            <div class="row">
-                <div class="col">
-                    <label class="control-label">Manage Tags</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="row mb-2">
-                        <div class="col">
-                            <input type="text" class="form-control" id="TagEntry" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button name="Add" type="button" class="btn btn-dark btn-sm w-100">Add</button>
-                        </div>
-                        <div class="col">
-                            <button name="Delete" type="button" class="btn btn-dark btn-sm w-100">Delete</button>
-                        </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label class="control-label">Manage Tags</label>
                     </div>
                 </div>
-                <div class="col">
-                    <select class="btn-block" name="tagValues" id="Taglist" multiple></select>
+                <div class="row">
+                    <div class="col">
+                        <div class="row mb-2">
+                            <div class="col">
+                                <input type="text" class="form-control" id="TagEntry" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button onclick="AddTag()" name="Add" type="button" class="btn btn-dark btn-sm w-100">Add</button>
+                            </div>
+                            <div class="col">
+                                <button onclick="DeleteTag()" name="Delete" type="button" class="btn btn-dark btn-sm w-100">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <select class="w-100" name="TagValues" id="TagList" multiple></select>
+                    </div>
                 </div>
-            </div>
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
@@ -95,7 +95,7 @@
                     <span asp-validation-for="ContentType" class="text-danger"></span>
                 </div>*@
             <div class="form-group">
-                <button type="submit" value="Create" class="btn btn-primary btn-sm btn-dark w-100" >Create</button>
+                <button type="submit" value="Create" class="btn btn-primary btn-sm btn-dark w-100">Create</button>
             </div>
         </form>
     </div>
@@ -106,14 +106,12 @@
 </div>
 
 @section Scripts{
-
+    <script src="~/js/Custom.js"></script>
     <script>
         //Default font size but not for placeholder...
         $('#Content').summernote({
             placeholder: "Post Body"
         });
     </script>
-
-
 
 }

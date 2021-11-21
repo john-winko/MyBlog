@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,7 @@ namespace MyBlog.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
@@ -59,7 +61,30 @@ namespace MyBlog.Controllers
             return View(post);
         }
 
+        // Was shown in video before coding this up
+        // public async Task<IActionResult> Details(string slug)
+        // {
+        //     if (string.IsNullOrEmpty(slug))
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     var post = await _context.Posts
+        //         .Include(p => p.Blog)
+        //         .Include(p => p.BlogUser)
+        //         .Include(p => p.Tags)
+        //         .FirstOrDefaultAsync(m => m.Slug == slug);
+        //     if (post == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     return View(post);
+        // }
+
         // GET: Posts/Create
+        // Does not show an authorize attribute in video but page authenticates before showing create in video
+        // [Authorize]
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
@@ -72,7 +97,9 @@ namespace MyBlog.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // TODO: Don't we need to authorize before creating?
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
@@ -129,12 +156,13 @@ namespace MyBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.Include(p=>p.Tags).FirstOrDefaultAsync(p=>p.Id == id);
             if (post == null)
             {
                 return NotFound();
             }
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
             return View(post);
         }
 

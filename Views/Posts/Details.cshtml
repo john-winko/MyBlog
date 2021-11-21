@@ -14,6 +14,25 @@
         </div>
     </div>
 </article>  
+
+<hr />
+<article>
+    <div class="row">
+        <div class="col text-center h3 font-weight-bold">
+            Custom Post Tags
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            @foreach (var tag in Model.Tags)
+            {
+                /*Showing all the posts that have that specific tag: asp-action*/
+                <a class="btn btn-warning btn-sm btn-outline-dark" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+            }
+        </div>
+    </div>
+</article>
+<hr />
 <!-- Displaying comments related to the post-->
 <!-- Display image of content''s author-->
 
