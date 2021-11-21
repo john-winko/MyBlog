@@ -7,3 +7,9 @@
 option { 
     font-weight: bolder;
 }
+
+/* TODO: not targeting correct element as shown in video... need to adjust */
+div.swal2-container.swal2-center.swal2-backdrop-show > div {
+    outline: 4px solid black;
+    border: 2px solid #ff993b;
+}

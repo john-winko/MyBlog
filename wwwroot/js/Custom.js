@@ -9,11 +9,14 @@ function AddTag() {
     if (searchResult != null) {
         // trigger sweet alert for dup issue
         // TODO: change this to a validate tag as bool return
-        Swal.fire({
-            title: "Error!",
-            text: "Do you want to continue",
-            icon: "error",
-            confirmButtonText: "Cool"
+//        Swal.fire({
+//            title: "Error!",
+//            text: "Do you want to continue",
+//            icon: "error",
+//            confirmButtonText: "Cool"
+//        });
+        swalWithDarkButton.fire({
+            html: `<span class='font-weight-bolder'>${searchResult.toUpperCase()}</span> `
         });
     } else {
 
@@ -31,12 +34,18 @@ function AddTag() {
 
 function DeleteTag() {
     let tagCount = 1;
+    let tagList = document.getElementById("TagList");
 
+    if (!tagList) return false;
+    if (tagList.selectedIndex == -1) {
+        swalWithDarkButton.fire({
+            html: "<span class='font-weight-bolder'>Choose a tag before deleting</span>"
+        });
+        return true;
+    }
     while (tagCount > 0) {
-        let tagList = document.getElementById("TagList");
-        let selectedIndex = tagList.selectedIndex;
-        if (selectedIndex >= 0) {
-            tagList.options[selectedIndex] = null;
+        if (tagList.selectedIndex >= 0) {
+            tagList.options[tagList.selectedIndex] = null;
             tagCount--;
         } else {
             tagCount = 0;
@@ -82,3 +91,12 @@ function search(str) {
     }
     return null;
 }
+
+const swalWithDarkButton = Swal.mixin({
+    customClass: {
+        confirmButton: 'btn btn-danger btn-sm w-100 btn-outline-dark'
+    },
+    imageUrl: "/assets/img/oops.png",
+//    timer: 3000,
+    buttonsStyling: false
+});
