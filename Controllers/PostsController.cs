@@ -97,9 +97,8 @@ namespace MyBlog.Controllers
         // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        // TODO: Don't we need to authorize before creating?
+        // TODO: Don't we need to authorize before creating?        [Authorize]
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
@@ -116,16 +115,30 @@ namespace MyBlog.Controllers
 
                 // create the slug and determine if it is unique
                 var slug = _slugService.UrlFriendly(post.Title);
+
+                var validationError = false;
+
+                // detect empty slug
+                if (string.IsNullOrEmpty(slug))
+                {
+                    ModelState.AddModelError("", "The title you provided is empty");
+                    validationError = true;
+                }
+
+                // detect incoming duplicate slugs
                 if (!_slugService.IsUnique(slug))
                 {
-                    // not unique - add model state error, return user to create view
                     ModelState.AddModelError("Title", "The title you provided is not unique for url slug");
+                    validationError = true;
+                }
+
+                if (validationError)
+                {
                     ViewData["TagValues"] = string.Join(",", tagValues);
                     return View(post);
                 }
 
                 post.Slug = slug;
-
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
