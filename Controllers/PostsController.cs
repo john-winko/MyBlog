@@ -127,12 +127,18 @@ namespace MyBlog.Controllers
                 }
 
                 // detect incoming duplicate slugs
-                if (!_slugService.IsUnique(slug))
+                else if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "The title you provided is not unique for url slug");
                     validationError = true;
                 }
 
+                // else if (slug.Contains("test"))
+                // {
+                //     ModelState.AddModelError("", "Ohh are you testing again");
+                //     ModelState.AddModelError("Content", "The title cannot contain the word test");
+                //     validationError = true;
+                // }
                 if (validationError)
                 {
                     ViewData["TagValues"] = string.Join(",", tagValues);
