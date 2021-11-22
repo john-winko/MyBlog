@@ -42,30 +42,9 @@ namespace MyBlog.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var post = await _context.Posts
-                .Include(p => p.Blog)
-                .Include(p => p.BlogUser)
-                .Include(p => p.Tags)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return View(post);
-        }
-
-        // Was shown in video before coding this up
-        // public async Task<IActionResult> Details(string slug)
+        // public async Task<IActionResult> Details(int? id)
         // {
-        //     if (string.IsNullOrEmpty(slug))
+        //     if (id == null)
         //     {
         //         return NotFound();
         //     }
@@ -74,7 +53,7 @@ namespace MyBlog.Controllers
         //         .Include(p => p.Blog)
         //         .Include(p => p.BlogUser)
         //         .Include(p => p.Tags)
-        //         .FirstOrDefaultAsync(m => m.Slug == slug);
+        //         .FirstOrDefaultAsync(m => m.Id == id);
         //     if (post == null)
         //     {
         //         return NotFound();
@@ -82,6 +61,27 @@ namespace MyBlog.Controllers
         //
         //     return View(post);
         // }
+
+        // Was shown in video before coding this up
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return NotFound();
+            }
+        
+            var post = await _context.Posts
+                .Include(p => p.Blog)
+                .Include(p => p.BlogUser)
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+            if (post == null)
+            {
+                return NotFound();
+            }
+        
+            return View(post);
+        }
 
         // GET: Posts/Create
         // Does not show an authorize attribute in video but page authenticates before showing create in video
