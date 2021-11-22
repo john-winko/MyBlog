@@ -89,7 +89,7 @@ namespace MyBlog
             {
                 endpoints.MapControllerRoute(
                     name:"SlugRoute",
-                    pattern: "BlogPosts/UrlFriendly/{slug}",
+                    pattern: "BlogPosts/UrlFriendly/{id}",
                     defaults: new {controller = "Posts", action = "Details"});
                 endpoints.MapControllerRoute(
                     name: "default",
