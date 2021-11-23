@@ -28,10 +28,12 @@ namespace MyBlog.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var blogs = await _context.Blogs
-                .Include(b => b.BlogUser)
-                .ToListAsync();
-            return View(blogs);
+            // var blogs = await _context.Blogs
+            //     .Include(b => b.BlogUser)
+            //     .ToListAsync();
+            // return View(blogs);
+
+
         }
 
         public IActionResult Privacy()
