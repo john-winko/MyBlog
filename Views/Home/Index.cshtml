@@ -1,6 +1,7 @@
 ﻿@using MyBlog.Models
+@using X.PagedList
 
-@model IEnumerable<Blog>
+@model IPagedList<Blog>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -37,6 +38,9 @@
         </div>
     </div>
 </div>
+
+<!-- add paging controls here -->
+
 @section Scripts
 {
 

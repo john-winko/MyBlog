@@ -8,8 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
+using MyBlog.Enums;
 using MyBlog.Services;
 using MyBlog.ViewModels;
+using X.PagedList;
 
 namespace MyBlog.Controllers
 {
@@ -26,14 +28,21 @@ namespace MyBlog.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
             // var blogs = await _context.Blogs
             //     .Include(b => b.BlogUser)
             //     .ToListAsync();
             // return View(blogs);
+            var blogs = _context.Blogs.Where(
+                    b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
+                .OrderByDescending(b => b.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
 
-
+            return View(await blogs);
         }
 
         public IActionResult Privacy()
