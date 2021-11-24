@@ -31,17 +31,21 @@ namespace MyBlog.Controllers
         public async Task<IActionResult> Index(int? page)
         {
             var pageNumber = page ?? 1;
-            var pageSize = 5;
+            var pageSize = 2;
 
             // var blogs = await _context.Blogs
             //     .Include(b => b.BlogUser)
             //     .ToListAsync();
             // return View(blogs);
-            var blogs = _context.Blogs.Where(
-                    b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
+            var blogs = _context.Blogs
+                .Include(b => b.BlogUser)
+                /*.Where(b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))*/
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
-
+            // var blogs = _context.Blogs.Where(
+            //         b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
+            //     .OrderByDescending(b => b.Created)
+            //     .ToPagedListAsync(pageNumber, pageSize);
             return View(await blogs);
         }
 
