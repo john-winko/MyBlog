@@ -9,9 +9,11 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Administrator"))
+{<p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -31,11 +33,11 @@
                 @Html.DisplayNameFor(model => model.ImageData)
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.ContentType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogUser)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.ContentType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BlogUser)
+                </th>*@
             <th></th>
         </tr>
     </thead>
@@ -56,15 +58,15 @@
                     @Html.DisplayFor(modelItem => blog.Updated)
                 </td>
                 <td>
-                    <img class="img-fluid" width="200px;" src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)"/>
+                    <img class="img-fluid" width="200px;" src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
                     @*@Html.DisplayFor(modelItem => blog.ImageData)*@
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => blog.ContentType)
-                </td>
-                <td>
-                    @#1#Html.DisplayFor(modelItem => blog.BlogUser.Id)#1#
-                </td>*@
+                        @Html.DisplayFor(modelItem => blog.ContentType)
+                    </td>
+                    <td>
+                        @#1#Html.DisplayFor(modelItem => blog.BlogUser.Id)#1#
+                    </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |
