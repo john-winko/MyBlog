@@ -51,6 +51,7 @@ namespace MyBlog
 
             // register custom DataService class
             services.AddScoped<DataService>();
+            services.AddScoped<BlogSearchService>();
             
             // register a preconfigured instance of the MailSettings class
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
@@ -61,6 +62,7 @@ namespace MyBlog
 
             // register slug service
             services.AddScoped<ISlugService, BasicSlugService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

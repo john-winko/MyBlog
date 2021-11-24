@@ -23,17 +23,20 @@ namespace MyBlog.Controllers
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
         private readonly UserManager<BlogUser> _userManager;
+        private readonly BlogSearchService _blogSearchService;
 
         public PostsController(
-            ApplicationDbContext context, 
-            ISlugService slugService, 
-            IImageService imageService, 
-            UserManager<BlogUser> userManager)
+            ApplicationDbContext context,
+            ISlugService slugService,
+            IImageService imageService,
+            UserManager<BlogUser> userManager, 
+            BlogSearchService blogSearchService)
         {
             _context = context;
             _slugService = slugService;
             _imageService = imageService;
             _userManager = userManager;
+            _blogSearchService = blogSearchService;
         }
 
         public async Task<IActionResult> SearchIndex(int? page, string searchTerm)
@@ -42,27 +45,8 @@ namespace MyBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 2;
 
-            var posts = _context.Posts
-                .Where(p => p.ReadyStatus == ReadyStatus.ProductionReady)
-                .AsQueryable();
-            if (searchTerm != null)
-            {
-                // TODO: maybe use a stored procedure on the db for searching?
-                searchTerm = searchTerm.ToLower();
-                posts = posts.Where( p=>
-                   p.Title.ToLower().Contains(searchTerm) ||
-                   p.Abstract.ToLower().Contains(searchTerm) ||
-                   p.Content.ToLower().Contains(searchTerm) ||
-                   p.Comments.Any(c =>
-                       c.Body.ToLower().Contains(searchTerm) ||
-                       c.ModeratedBody.ToLower().Contains(searchTerm) /*||
-                       c.BlogUser.FirstName.ToLower().Contains(searchTerm) ||
-                       c.BlogUser.LastName.ToLower().Contains(searchTerm) ||
-                       c.BlogUser.Email.ToLower().Contains(searchTerm)*/)
-                    );// TODO: no reference to c.BlogUserId or p.BlogUserId, verify relationship or if an include is needed
-            }
+            var posts = _blogSearchService.Search(searchTerm);
 
-            posts = posts.OrderByDescending(p => p.Created);
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
@@ -84,7 +68,7 @@ namespace MyBlog.Controllers
                 .OrderByDescending(p =>p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
             
-            return View(posts);
+            return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
         // GET: Posts/Details/5
