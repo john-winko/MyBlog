@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
+using MyBlog.Enums;
 using MyBlog.Models;
 using MyBlog.Services;
 using Npgsql.PostgresTypes;
+using X.PagedList;
 
 namespace MyBlog.Controllers
 {
@@ -41,12 +43,18 @@ namespace MyBlog.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> BlogPostIndex(int? id)
+        public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
             if (id is null) return NotFound();
-            //var posts = _context.Posts.Where(p => p.BlogId == id);
-            var posts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
-            return View("Index", posts);
+            var pageNumber = page ?? 1;
+            var pageSize = 2;
+
+            var posts = await _context.Posts
+                .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                .OrderByDescending(p =>p.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
+            
+            return View(posts);
         }
 
         // GET: Posts/Details/5
@@ -177,6 +185,7 @@ namespace MyBlog.Controllers
         }
 
         // GET: Posts/Edit/5
+        // TODO: change to slug vs id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

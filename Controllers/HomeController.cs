@@ -42,10 +42,7 @@ namespace MyBlog.Controllers
                 /*.Where(b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))*/
                 .OrderByDescending(b => b.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
-            // var blogs = _context.Blogs.Where(
-            //         b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
-            //     .OrderByDescending(b => b.Created)
-            //     .ToPagedListAsync(pageNumber, pageSize);
+
             return View(await blogs);
         }
 
