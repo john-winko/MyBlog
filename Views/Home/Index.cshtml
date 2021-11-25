@@ -13,16 +13,18 @@
     @foreach (var blog in Model)
     {
         <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            @* TODO: card sizes aren't same even with new CSS, double check bs5 compatibility *@
             <div class="card border-dark">
-                <img class="card-img-top" src="@_imageService.DecodeImage(blog.ImageData,blog.ContentType)" />
+                <img class="card-img-top" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)"/>
                 <div class="card-body text-center">
 
                     <div class="bg-warning">
-                        <hr class="card-hr" />
+                        <hr class="card-hr"/>
                         <h5 class="card-title">@blog.Name</h5>
-                        <hr class="card-hr" />
+                        <hr class="card-hr"/>
                     </div>
-
+                    
+                    <!-- TODO: Tooltips do not work css conflict? bs5 compatibility?-->
                     <div>
                         <p class="card-text cftooltip"
                            data-bs-toggle="tooltip"
@@ -33,7 +35,7 @@
                         </p>
                     </div>
 
-                    <br />
+                    <br/>
                     <div class="text-center">
                         <a class="btn btn-dark btn-sm w-100 mb-2"
                            asp-action="BlogPostIndex"
@@ -77,12 +79,13 @@
     </div>
 </div>
 <div class="row">
+    <!-- TODO: Page links still blue even though custom.css is supposed to override it (summernote conflict?)-->
     <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+        @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
             new PagedListRenderOptions
             {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"}
             });
     </div>
 </div>
