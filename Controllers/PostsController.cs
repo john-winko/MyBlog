@@ -12,6 +12,7 @@ using MyBlog.Data;
 using MyBlog.Enums;
 using MyBlog.Models;
 using MyBlog.Services;
+using MyBlog.ViewModels;
 using Npgsql.PostgresTypes;
 using X.PagedList;
 
@@ -92,28 +93,62 @@ namespace MyBlog.Controllers
         //     return View(post);
         // }
 
-        // Was shown in video before coding this up
         public async Task<IActionResult> Details(string slug)
         {
+            ViewData["Title"] = "Post Details Page";
+            
             if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
 
             var post = await _context.Posts
-                .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
-                .ThenInclude(c=>c.BlogUser) // Blog user of post may not be person currently logged in
+                .ThenInclude(c => c.BlogUser) 
+                .Include(p=>p.Comments)
+                .ThenInclude(c=>c.Moderator)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
+            
             if (post == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            var dataVM = new PostDetailViewModel()
+            {
+                Post = post,
+                Tags = _context.Tags
+                    .Select(t => t.Text.ToLower())
+                    .Distinct()
+                    .ToList()
+            };
+            return View(dataVM);
         }
+
+        // Was shown in video before coding this up
+        // public async Task<IActionResult> Details(string slug)
+        // {
+        //     if (string.IsNullOrEmpty(slug))
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     var post = await _context.Posts
+        //         .Include(p => p.Blog)
+        //         .Include(p => p.BlogUser)
+        //         .Include(p => p.Tags)
+        //         .Include(p => p.Comments)
+        //         .ThenInclude(c=>c.BlogUser) // Blog user of post may not be person currently logged in
+        //         .FirstOrDefaultAsync(m => m.Slug == slug);
+        //     if (post == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     return View(post);
+        // }
 
         // GET: Posts/Create
         // Does not show an authorize attribute in video but page authenticates before showing create in video
