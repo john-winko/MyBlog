@@ -89,6 +89,7 @@ namespace MyBlog.Services
 
             // add new user to administrator role
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
+
         }
     }
 }
