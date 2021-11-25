@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace MyBlog.Data.Migrations
+namespace MyBlog.Migrations
 {
-    public partial class _001 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,6 +29,7 @@ namespace MyBlog.Data.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    DisplayName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     ImageData = table.Column<byte[]>(type: "bytea", nullable: true),
                     ContentType = table.Column<string>(type: "text", nullable: true),
                     FacebookUrl = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
@@ -191,7 +192,7 @@ namespace MyBlog.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BlogId = table.Column<int>(type: "integer", nullable: false),
-                    BlogUserrId = table.Column<string>(type: "text", nullable: true),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Abstract = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
@@ -200,8 +201,7 @@ namespace MyBlog.Data.Migrations
                     ReadyStatus = table.Column<int>(type: "integer", nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true),
                     ImageData = table.Column<byte[]>(type: "bytea", nullable: true),
-                    ContentType = table.Column<string>(type: "text", nullable: true),
-                    BlogUserId = table.Column<string>(type: "text", nullable: true)
+                    ContentType = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -227,7 +227,7 @@ namespace MyBlog.Data.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PostId = table.Column<int>(type: "integer", nullable: false),
-                    BlogUserrId = table.Column<string>(type: "text", nullable: true),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
                     ModeratorId = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -235,8 +235,7 @@ namespace MyBlog.Data.Migrations
                     Moderated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Deleted = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     ModeratedBody = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
-                    ModerationType = table.Column<int>(type: "integer", nullable: false),
-                    BlogUserId = table.Column<string>(type: "text", nullable: true)
+                    ModerationType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

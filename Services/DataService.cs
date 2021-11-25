@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ namespace MyBlog.Services
             {
                 Email = "john.winko@gmail.com",
                 UserName = "john.winko@gmail.com",
+                DisplayName = "John",
                 FirstName = "John",
                 LastName = "Winko",
                 PhoneNumber = "(904) 703-4856",
@@ -75,6 +77,7 @@ namespace MyBlog.Services
             {
                 Email = "eternal81@msn.com",
                 UserName = "eternal81@msn.com",
+                DisplayName = "John",
                 FirstName = "John",
                 LastName = "Winko",
                 PhoneNumber = "(904) 703-4856",
