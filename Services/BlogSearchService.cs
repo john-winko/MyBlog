@@ -32,11 +32,11 @@ namespace MyBlog.Services
                     p.Content.ToLower().Contains(searchTerm) ||
                     p.Comments.Any(c =>
                         c.Body.ToLower().Contains(searchTerm) ||
-                        c.ModeratedBody.ToLower().Contains(searchTerm) /*||
+                        c.ModeratedBody.ToLower().Contains(searchTerm) ||
                        c.BlogUser.FirstName.ToLower().Contains(searchTerm) ||
                        c.BlogUser.LastName.ToLower().Contains(searchTerm) ||
-                       c.BlogUser.Email.ToLower().Contains(searchTerm)*/)
-                );// TODO: no reference to c.BlogUserId or p.BlogUserId, verify relationship or if an include is needed
+                       c.BlogUser.Email.ToLower().Contains(searchTerm))
+                );
             }
 
             return posts.OrderByDescending(p => p.Created);
