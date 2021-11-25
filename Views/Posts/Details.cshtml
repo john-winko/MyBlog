@@ -1,5 +1,6 @@
 ﻿@using MyBlog.Services
 @using Microsoft.AspNetCore.Identity
+@using MyBlog.Enums
 @model MyBlog.Models.Post
 @inject IImageService imageService
 @inject UserManager<BlogUser> userManager
@@ -16,7 +17,7 @@
             </div>
         </div>
     </div>
-</article>  
+</article>
 
 <hr />
 <article>
@@ -47,7 +48,7 @@
                 <label class="h2 control-label font-weight-bold"> Add a Comment</label>
                 <textarea name="body" class="form-control" rows="10"></textarea>
             </div>
-            <button type="submit" class="btn btn-dark w-100 btn-sm" >Submit</button>
+            <button type="submit" class="btn btn-dark w-100 btn-sm">Submit</button>
         </form>
     }
     else
@@ -62,21 +63,40 @@
 @foreach (var comment in Model.Comments)
 {
     <div class="media media-border p-0 mb-2 bg-light">
-        <img class="mr-3 mt-3 rounded-circle" style="width: 60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)"/>
+        <img class="mr-3 mt-3 rounded-circle" style="width: 60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
         <div class="media-body">
             <h4>@comment.BlogUser.FullName</h4>
             <small><i> Posted on @comment.Created.ToString("MMM dd, yyy")</i></small>
             <p>@comment.Body</p>
-            
+
+            @* ******************************* Render the edit button *******************************@
             @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
-                <hr/>
+                <hr />
                 <button data-bs-toggle="modal" data-bs-target="#editModal-@comment.Id" class="btn btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+            }
+
+            @* ******************************* Render the moderate and delete buttons *******************************@
+            @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-2">
+                        <button class="btn btn-sm btn-dark font-weight-bold w-100" data-bs-toggle="modal" data-target="#moderateModal-@comment.Id">MODERATE</button>
+                    </div>
+                    <div class="col-2">
+                        <form asp-action="Delete" asp-controller="Comments">
+                            @Html.Hidden("Id", comment.Id)
+                            @Html.Hidden("Slug", comment.Post.Slug)
+                            <button class="btn-sm btn-dark font-weight-bold w-100">DELETE</button>
+                        </form>
+                    </div>
+
+                </div>
             }
         </div>
     </div>
 
-    // TODO: only editing first comment, if user has multiple comments it only modals the first
     // Modals
     <div class="modal" id="editModal-@comment.Id">
         <div class="modal-dialog">
@@ -89,19 +109,72 @@
                 <div class="modal-body">
                     <form asp-action="Edit" asp-controller="Comments">
                         @Html.Hidden("Id", comment.Id)
-                        
+
                         <div class="form-group">
                             <textarea name="Body" class="form-control" required>@comment.Body</textarea>
                         </div>
-                        
+
                         <button class="btn btn-sm btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
                     </form>
                 </div>
-                
+
                 <!-- Modal Footer-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="moderateModal-@comment.Id">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" @*id="modalTitle-@comment.Id"*@>Moderating Comment...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+                <div class="modal-body">
+                    <form asp-action="Moderate" asp-controller="Comments">
+                        @Html.Hidden("Id", comment.Id)
+                        @Html.Hidden("Body", comment.Body)
+
+                        <div class="form-group">
+                            <label class="control-label">Original Comment</label>
+                            <textarea disabled class="form-control" style="resize: none">@comment.Body</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Moderated Comment</label>
+                            <textarea required class="form-control" style="resize: none">@comment.ModeratedBody</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Reason For Moderation</label>
+                            <select class="form-control" asp-for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList(typeof(ModerationType))"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-sm w-100 btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-sm w-100 btn-dark border-success font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -110,7 +183,6 @@
 
 <!-- Displaying comments related to the post-->
 <!-- Display image of content''s author-->
-
 @*<p>Never in all their history have men been able truly to conceive of the world as one: a single sphere, a globe, having the qualities of a globe, a round earth in which all the directions eventually meet, in which there is no center because every point, or none, is center — an equal earth which all men occupy as equals. The airman's earth, if free men make it, will be truly round: a globe in practice, not in theory.</p>
     <p>Science cuts two ways, of course; its products can be used for both good and evil. But there's no turning back from science. The early warnings about technological dangers also come from science.</p>
     <p>What was most significant about the lunar voyage was not that man set foot on the Moon but that they set eye on the earth.</p>
