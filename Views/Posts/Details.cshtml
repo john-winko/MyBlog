@@ -75,10 +75,10 @@
     @foreach (var comment in Model.Post.Comments.OrderByDescending(c => c.Created))
     {
         <div class="media p-3 mb-2 bg-cf media-border">
-            <img src="@_imageService.DecodeImage(comment.Author.Image, comment.Author.ContentType)" alt="@comment.Author.Fullname" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
+            <img src="@_imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" alt="@comment.BlogUser.FullName" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
 
             <div class="media-body">
-                <h4>@comment.Author.Fullname</h4>
+                <h4>@comment.BlogUser.FullName</h4>
 
                 @****************************************************************
                     SECTION 1: POST ON OR UPDATED ON
@@ -120,11 +120,11 @@
                 <br />
                 @if (comment.Deleted is not null)
                 {
-                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.Author.Fullname was deleted by the Moderator...</span>
+                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName was deleted by the Moderator...</span>
                 }
                 else if (comment.Moderated is not null)
                 {
-                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.Author.Fullname has been Moderated...</span>
+                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName has been Moderated...</span>
                 }
 
                 <hr />
@@ -149,7 +149,7 @@
                 @****************************************************************
                         SECTION 3: CAN WE RENDER THE EDIT BUTTON
                     *****************************************************************@
-                @if (comment.Moderated is null && comment.Deleted is null && comment.AuthorId == _userManager.GetUserId(User))
+                @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == _userManager.GetUserId(User))
                 {
                     <hr>
                     <button data-toggle="modal" data-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
