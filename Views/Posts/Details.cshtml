@@ -1,6 +1,8 @@
 ﻿@using MyBlog.Services
+@using Microsoft.AspNetCore.Identity
 @model MyBlog.Models.Post
 @inject IImageService imageService
+@inject UserManager<BlogUser> userManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -53,7 +55,9 @@
         <a class="btn btn-sm btn-dark w-100" asp-area="Identity" asp-page="/Account/Login">Login to add comments</a>
     }
 </div>
-<span class="btn btn-sm btn-dark w-100">@Model.Comments.Count Comment(s)</span>
+
+<button class="btn btn-sm btn-dark w-100">@Model.Comments.Count Comment(s)</button>
+
 @* TODO: Separate columns for picture side by side with the comment *@
 @foreach (var comment in Model.Comments)
 {
@@ -63,6 +67,41 @@
             <h4>@comment.BlogUser.FullName</h4>
             <small><i> Posted on @comment.Created.ToString("MMM dd, yyy")</i></small>
             <p>@comment.Body</p>
+            
+            @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
+            {
+                <hr/>
+                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+            }
+        </div>
+    </div>
+
+    // Modals
+    <div class="modal" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editing Comment...</h4>
+                </div>
+
+                <!-- Modal Body-->
+                <div class="modal-body">
+                    <form asp-action="Edit" asp-controller="Comments">
+                        @Html.Hidden("Id", comment.Id)
+                        
+                        <div class="form-group">
+                            <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                        </div>
+                        
+                        <button class="btn btn-sm btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
+                    </form>
+                </div>
+                
+                <!-- Modal Footer-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
         </div>
     </div>
 }
