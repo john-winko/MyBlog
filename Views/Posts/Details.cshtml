@@ -56,7 +56,7 @@
     }
 </div>
 
-<button class="btn btn-sm btn-dark w-100">@Model.Comments.Count Comment(s)</button>
+<button id="commentSection" class="btn btn-sm btn-dark w-100">@Model.Comments.Count Comment(s)</button>
 
 @* TODO: Separate columns for picture side by side with the comment *@
 @foreach (var comment in Model.Comments)
@@ -71,11 +71,12 @@
             @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
                 <hr/>
-                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+                <button data-bs-toggle="modal" data-bs-target="#editModal-@comment.Id" class="btn btn-sm btn-dark float-right font-weight-bold">EDIT</button>
             }
         </div>
     </div>
 
+    // TODO: only editing first comment, if user has multiple comments it only modals the first
     // Modals
     <div class="modal" id="editModal">
         <div class="modal-dialog">
