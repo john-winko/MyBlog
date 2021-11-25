@@ -124,6 +124,11 @@ namespace MyBlog.Controllers
                     .Distinct()
                     .ToList()
             };
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+
             return View(dataVM);
         }
 
@@ -294,7 +299,7 @@ namespace MyBlog.Controllers
                             return View(post);
                         }
                     }
-
+                    // TODO: imagedata not being saved to database
                     if (newImage is not null)
                     {
                         newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
