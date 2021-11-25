@@ -29,7 +29,7 @@ namespace MyBlog.Controllers
             ApplicationDbContext context,
             ISlugService slugService,
             IImageService imageService,
-            UserManager<BlogUser> userManager, 
+            UserManager<BlogUser> userManager,
             BlogSearchService blogSearchService)
         {
             _context = context;
@@ -65,9 +65,9 @@ namespace MyBlog.Controllers
 
             var posts = await _context.Posts
                 .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
-                .OrderByDescending(p =>p.Created)
+                .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
-            
+
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
@@ -99,17 +99,19 @@ namespace MyBlog.Controllers
             {
                 return NotFound();
             }
-        
+
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .Include(p => p.Tags)
+                .Include(p => p.Comments)
+                .ThenInclude(c=>c.BlogUser) // Blog user of post may not be person currently logged in
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
             }
-        
+
             return View(post);
         }
 
@@ -207,7 +209,7 @@ namespace MyBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p=>p.Tags).FirstOrDefaultAsync(p=>p.Id == id);
+            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
             if (post == null)
             {
                 return NotFound();
@@ -234,7 +236,7 @@ namespace MyBlog.Controllers
                 try
                 {
                     // pull prior data before so we don't overwrite with a null (the originalPost)
-                    var newPost = await _context.Posts.Include(p=>p.Tags).FirstOrDefaultAsync(p=>p.Id == post.Id);
+                    var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now;
                     newPost.Title = post.Title;
