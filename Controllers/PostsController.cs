@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,6 @@ using MyBlog.Enums;
 using MyBlog.Models;
 using MyBlog.Services;
 using MyBlog.ViewModels;
-using Npgsql.PostgresTypes;
 using X.PagedList;
 
 namespace MyBlog.Controllers
@@ -72,27 +70,6 @@ namespace MyBlog.Controllers
             return View(await posts.ToPagedListAsync(pageNumber, pageSize));
         }
 
-        // GET: Posts/Details/5
-        // public async Task<IActionResult> Details(int? id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     var post = await _context.Posts
-        //         .Include(p => p.Blog)
-        //         .Include(p => p.BlogUser)
-        //         .Include(p => p.Tags)
-        //         .FirstOrDefaultAsync(m => m.Id == id);
-        //     if (post == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return View(post);
-        // }
-
         public async Task<IActionResult> Details(string slug)
         {
             ViewData["Title"] = "Post Details Page";
@@ -131,29 +108,6 @@ namespace MyBlog.Controllers
 
             return View(dataVM);
         }
-
-        // Was shown in video before coding this up
-        // public async Task<IActionResult> Details(string slug)
-        // {
-        //     if (string.IsNullOrEmpty(slug))
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     var post = await _context.Posts
-        //         .Include(p => p.Blog)
-        //         .Include(p => p.BlogUser)
-        //         .Include(p => p.Tags)
-        //         .Include(p => p.Comments)
-        //         .ThenInclude(c=>c.BlogUser) // Blog user of post may not be person currently logged in
-        //         .FirstOrDefaultAsync(m => m.Slug == slug);
-        //     if (post == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //
-        //     return View(post);
-        // }
 
         // GET: Posts/Create
         // Does not show an authorize attribute in video but page authenticates before showing create in video
@@ -205,12 +159,6 @@ namespace MyBlog.Controllers
                     validationError = true;
                 }
 
-                // else if (slug.Contains("test"))
-                // {
-                //     ModelState.AddModelError("", "Ohh are you testing again");
-                //     ModelState.AddModelError("Content", "The title cannot contain the word test");
-                //     validationError = true;
-                // }
                 if (validationError)
                 {
                     ViewData["TagValues"] = string.Join(",", tagValues);

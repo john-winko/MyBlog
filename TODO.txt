@@ -1,0 +1,7 @@
+﻿Support for ASP.NET Core Identity was added to your project.
+
+For setup and configuration information, see https://go.microsoft.com/fwlink/?linkid=2116645.
+
+TODO: update variable names with consistent naming IAW resharper
+TODO: investigate better RTE over summernote that does not interfere with bootstrap
+TODO: create searchable/filterable TagIndex, views and actions

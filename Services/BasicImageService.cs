@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyBlog.Services
@@ -23,7 +21,7 @@ namespace MyBlog.Services
         public async Task<byte[]> EncodeImageAsync(IFormFile file)
         {
             if (file is null) return null; // guard statement
-            using var ms = new MemoryStream();
+            await using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
             return ms.ToArray();
         }

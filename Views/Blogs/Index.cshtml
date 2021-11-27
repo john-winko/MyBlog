@@ -32,12 +32,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.ImageData)
             </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.ContentType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.BlogUser)
-                </th>*@
             <th></th>
         </tr>
     </thead>
@@ -59,14 +53,7 @@
                 </td>
                 <td>
                     <img class="img-fluid" width="200px;" src="@imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
-                    @*@Html.DisplayFor(modelItem => blog.ImageData)*@
                 </td>
-                @*<td>
-                        @Html.DisplayFor(modelItem => blog.ContentType)
-                    </td>
-                    <td>
-                        @#1#Html.DisplayFor(modelItem => blog.BlogUser.Id)#1#
-                    </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@blog.Id">Details</a> |

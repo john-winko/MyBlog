@@ -1,5 +1,4 @@
 ﻿@using MyBlog.Services
-@using MyBlog.Models
 @using MyBlog.Enums
 @using Microsoft.AspNetCore.Identity
 @using X.PagedList
@@ -18,8 +17,6 @@
         var isAuthor = false;
         if (User.Identity.IsAuthenticated)
         {
-            // isAuthor = User.IsInRole(BlogRole.GuestAuthor.ToString());
-            // isAuthor = isAuthor && (post.AuthorId == _userManager.GetUserId(User));
             isAuthor = (post.BlogUserId == _userManager.GetUserId(User));
         }
 
@@ -71,120 +68,3 @@
             })
     </div>
 </div>
-
-@*@{
-        ViewData["Title"] = "Index";
-    }
-
-    <h1>Index</h1>
-
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.BlogUserId)
-                    </th>#1#
-                <th>
-                    Image
-                </th>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Abstract
-                </th>
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.Content)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.Created)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.Updated)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.ReadyStatus)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.Slug)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.ImageData)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ContentType)
-                    </th>#1#
-                $1$<th>
-                        @Html.DisplayNameFor(model => model.Blog)
-                    </th>#1#
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.BlogUserId)
-                        </td>#1#
-                    <td>
-                        <img class="img-fluid" width="200px;" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Abstract)
-                    </td>
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.Content)
-                        </td>#1#
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.Updated)
-                        </td>#1#
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReadyStatus)
-                    </td>
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.Slug)
-                        </td>#1#
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.ImageData)
-                        </td>#1#
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.ContentType)
-                        </td>#1#
-                    $1$<td>
-                            @Html.DisplayFor(modelItem => item.Blog.Description)
-                        </td>#1#
-                    <td>
-                        <a asp-action="Edit" asp-route-slug="@item.Slug">Edit</a> |
-                        <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                        <a asp-action="Delete" asp-route-slug="@item.Slug">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <hr />
-    <div class="row">
-        <div class="col h3">
-            Page @(Model.PageCount <Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new {id = Model.FirstOrDefault().BlogId, page = page}), new PagedListRenderOptions()
-            {
-                LiElementClasses = new string[] {"page-item"},
-                PageClasses = new string[] {"page-link"}
-            });
-        </div>
-    </div>*@

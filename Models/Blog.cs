@@ -37,9 +37,6 @@ namespace MyBlog.Models
         [NotMapped]
         public IFormFile Image { get; set; }
 
-        // public BlogUser Author { get; set; }
-        
-
         // Navigation Property
         [Display(Name = "Author")]
         public virtual BlogUser BlogUser { get; set; }

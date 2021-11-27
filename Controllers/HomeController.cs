@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MyBlog.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
-using MyBlog.Enums;
 using MyBlog.Services;
 using MyBlog.ViewModels;
 using X.PagedList;
@@ -33,10 +30,6 @@ namespace MyBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 2;
 
-            // var blogs = await _context.Blogs
-            //     .Include(b => b.BlogUser)
-            //     .ToListAsync();
-            // return View(blogs);
             var blogs = _context.Blogs
                 .Include(b => b.BlogUser)
                 /*.Where(b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))*/

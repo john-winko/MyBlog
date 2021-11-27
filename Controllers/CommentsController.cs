@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -43,14 +42,6 @@ namespace MyBlog.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Comments/Create
-        // public IActionResult Create()
-        // {
-        //     ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-        //     ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id");
-        //     ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-        //     return View();
-        // }
 
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -68,9 +59,7 @@ namespace MyBlog.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
-            // ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
-            // ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
+
             return View(comment);
         }
 
@@ -131,9 +120,7 @@ namespace MyBlog.Controllers
                 }
                 return RedirectToAction("Details", "Posts", new {slug = newComment.Post.Slug}, "commentSection");
             }
-            // ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
-            // ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
-            // ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
+
             return View(comment);
         }
 

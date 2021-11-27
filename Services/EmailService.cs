@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -21,8 +18,10 @@ namespace MyBlog.Services
 
         public async Task SendContactEmailAsync(string emailFrom, string name, string subject, string htmlMessage)
         {
-            var email = new MimeMessage();
-            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+            var email = new MimeMessage
+            {
+                Sender = MailboxAddress.Parse(_mailSettings.Mail)
+            };
             email.To.Add(MailboxAddress.Parse(_mailSettings.Mail));
             email.Subject = subject;
 
@@ -32,12 +31,12 @@ namespace MyBlog.Services
             email.Body = builder.ToMessageBody();
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
 
             await smtp.SendAsync(email);
 
-            smtp.Disconnect(true);
+            await smtp.DisconnectAsync(true);
         }
 
         public async Task SendEmailAsync(string emailTo, string subject, string htmlMessage)
@@ -53,12 +52,12 @@ namespace MyBlog.Services
             };
             email.Body = builder.ToMessageBody();
             using var smtp = new SmtpClient();
-            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+            await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
 
             await smtp.SendAsync(email);
 
-            smtp.Disconnect(true);
+            await smtp.DisconnectAsync(true);
         }
     }
 }
